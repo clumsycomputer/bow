@@ -6,7 +6,7 @@ an ergonomic language for function composition that targets js
 
 - kinds: full, root, medium, final
 
-- inputs: types, parameters, arguments
+- inputs: generics, parameters, arguments
 
 - runtimes: type, parameter, argument
 
@@ -16,9 +16,9 @@ an ergonomic language for function composition that targets js
 
 - traditional function
 
-- can use types & arguments
+- can declare generics and arguments
 
-- cannot use parameters
+- declares result type
 
 - implements argument runtime logic
 
@@ -26,7 +26,9 @@ an ergonomic language for function composition that targets js
 
 - the starting block for function composition
 
-- can use types, parameters, and arguments
+- can declare generics, parameters, and arguments
+
+- declares result type
 
 - implements argument runtime logic
 
@@ -34,23 +36,31 @@ an ergonomic language for function composition that targets js
 
 - an interposed block for multi-layered function composition
 
-- can use types & parameters
+- can declare additional generics and parameters
 
-- cannot use arguments
+- declares base root function
 
-- implements parameter runtime logic
+- can provide generics to root function
+
+- provides parameters
 
 #### final
 
 - the terminal block of function composition
 
-- can use types & parameters
+- declares base function (root or medium)
 
-- cannot use arguments
+- can provide generics to base function
 
-- implements parameter runtime logic
+- provides parameters
 
 ### inputs
+
+#### generics
+
+#### parameters
+
+#### arguments
 
 ### examples
 
