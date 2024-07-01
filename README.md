@@ -38,11 +38,11 @@ an ergonomic language for function composition that targets js
 
 - can declare additional generics and parameters
 
-- declares base root function
+- declares base function, (root or medium)
 
-- can provide generics to root function
+- can provide generics to base function
 
-- provides parameters
+- provides partial parameters
 
 #### final
 
@@ -52,7 +52,7 @@ an ergonomic language for function composition that targets js
 
 - can provide generics to base function
 
-- provides parameters
+- provides remaining parameters
 
 ### inputs
 
