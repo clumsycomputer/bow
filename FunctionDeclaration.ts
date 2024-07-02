@@ -35,7 +35,7 @@
   * addTwo(4)
   * ```
   */
- type FunctionDeclaration = FullFunctionDeclaration | RootFunctionDeclaration | MediumFunctionDeclaration | FinalFunctionDeclaration
+type FunctionDeclaration = FullFunctionDeclaration | RootFunctionDeclaration | MediumFunctionDeclaration | FinalFunctionDeclaration
 
 
 interface FinalFunctionDeclaration extends 
