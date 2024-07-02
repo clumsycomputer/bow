@@ -80,6 +80,14 @@ addTwoPlusFour()
 
 ## js / ts interop
 
+## code generation
+
+- [https://romgrk.com/posts/optimizing-javascript](https://romgrk.com/posts/optimizing-javascript)
+
+- [https://mrale.ph/blog/2015/01/11/whats-up-with-monomorphism.html](https://mrale.ph/blog/2015/01/11/whats-up-with-monomorphism.html)
+
+- [http://asmjs.org/spec/latest/](http://asmjs.org/spec/latest/)
+
 ## prior art
 
 - typescript
