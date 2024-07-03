@@ -1,20 +1,20 @@
 {
-    "compilerOptions": {
-      "strict": true,
-      "noUncheckedIndexedAccess": true  
-    },
-    "fmt": {
-      "useTabs": false,
-      "singleQuote": true,
-      "semiColons": true,
-      "indentWidth": 2
-    },
-    "lint": {
-      "rules": {
-        "exclude": ["no-empty-interface"]
-      }
-    },
-    "tasks": {
-      "test": "deno test --allow-read --allow-write"
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "fmt": {
+    "useTabs": false,
+    "singleQuote": true,
+    "semiColons": true,
+    "indentWidth": 2
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-empty-interface"]
     }
+  },
+  "tasks": {
+    "test": "deno test --allow-read --allow-write"
   }
+}
