@@ -51,4 +51,3 @@ interface __BuildFunctionDeclaration {
   declarationBuildInputs: unknown
 }
 
-const foo = 'asdfasd'
