@@ -1,19 +1,27 @@
-full full__AA(aaa: number, bbb: number) => number {
+full full__01(aaa: number, bbb: number) => number {
     return aaa + bbb
 }
 
-root root__AA[aaa: number](bbb: number) => number {
+root root__02[aaa: number](bbb: number) => number {
     return aaa + bbb
 }
 
-final final__AA ::root__AA [aaa: 2]
+final final__03 ::root__02 [aaa: 2]
 
-root root__BB[aaa: number, bbb: number] => number {
+root root__04[aaa: number, bbb: number] => number {
     return aaa + bbb
 }
 
-medium medium__AA ::root__BB [aaa: 2]
+medium medium__05 ::root__04 [aaa: 2]
 
-final final__AA ::medium__AA [bbb: 3]
+final final__06 ::medium__05 [bbb: 3]
 
+root root__07[aaa: (bbb:< root__07) => number](bbb: number) => number (
+    return aaa(bbb)
+)
 
+final final__08 ::root__07 [
+    aaa: (bbb) => ( 
+        return bbb * bbb 
+    )
+]
