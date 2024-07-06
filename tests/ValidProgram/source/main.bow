@@ -16,7 +16,7 @@ medium medium__05 ::root__04 [aaa: 2]
 
 final final__06 ::medium__05 [bbb: 3]
 
-root root__07[aaa: (bbb: piped) => number](bbb: number) => number (
+root root__07[aaa: (bbb: root__07) => number](bbb: number) => number (
     return aaa(bbb)
 )
 

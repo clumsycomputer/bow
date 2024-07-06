@@ -2,7 +2,7 @@ type FunctionDeclaration =
   | FullFunctionDeclaration
   | RootFunctionDeclaration
   | MediumFunctionDeclaration
-  | FinalFunctionDeclaration
+  | FinalFunctionDeclaration;
 
 interface FinalFunctionDeclaration extends __BaseFunctionDeclaration<'final'> {}
 
@@ -14,9 +14,9 @@ interface MediumFunctionDeclaration
 
 interface __BaseFunctionDeclaration<ThisDeclarationKind>
   extends __FunctionDeclaration<ThisDeclarationKind> {
-  declarationBaseName: string
-  declarationBaseGenericInputs: unknown
-  declarationBaseBuildInputs: unknown
+  declarationBaseName: string;
+  declarationBaseGenericInputs: unknown;
+  declarationBaseBuildInputs: unknown;
 }
 
 interface RootFunctionDeclaration
@@ -33,21 +33,20 @@ interface FullFunctionDeclaration
     __RunFunctionDeclaration {}
 
 interface __FunctionDeclaration<ThisDeclarationKind> {
-  declarationKind: ThisDeclarationKind
-  declarationName: string
+  declarationKind: ThisDeclarationKind;
+  declarationName: string;
 }
 
 interface __RunFunctionDeclaration {
-  declarationRunInputs: unknown
-  declarationRunResult: unknown
-  declarationRunLogic: unknown
+  declarationRunInputs: unknown;
+  declarationRunResult: unknown;
+  declarationRunLogic: unknown;
 }
 
 interface __GenericFunctionDeclaration {
-  declarationGenericInputs: unknown
+  declarationGenericInputs: unknown;
 }
 
 interface __BuildFunctionDeclaration {
-  declarationBuildInputs: unknown
+  declarationBuildInputs: unknown;
 }
-
