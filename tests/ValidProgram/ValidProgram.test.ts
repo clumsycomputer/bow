@@ -4,6 +4,58 @@ const mainProgramFile = Path.join(import.meta.dirname!, './source/main.bow');
 const mainProgramSource = Deno.readFileSync(mainProgramFile);
 console.log(mainProgramSource);
 
+enum TokenKind {
+  // keywords
+  FullKeyword,
+  RootKeyword,
+  MediumKeyword,
+  FinalKeyword,
+  ReturnKeyword,
+  StringKeyword,
+  NumberKeyword,
+  TrueKeyword,
+  FalseKeyword,
+  NullKeyword,
+  IfKeyword,
+  ElseKeyword,
+  ForKeyword,
+  WhileKeyword,
+  ConstKeyword,
+  LetKeyword,
+  TryKeyword,
+  CatchKeyword,
+  // symbols
+  OpenParenthesisSymbol,
+  CloseParenthesisSymbol,
+  OpenBracketSymbol,
+  CloseBracketSymbol,
+  OpenCurlyBraceSymbol,
+  CloseCurlyBraceSymbol,
+  OpenAngleBracketSymbol,
+  CloseAngleBracketSymbol,
+  ColonSymbol,
+  CommaSymbol,
+  PlusSymbol,
+  MinusSymbol,
+  AsteriskSymbol,
+  SlashSymbol,
+  PercentSymbol,
+  DotSymbol,
+  EqualSymbol,
+  // // composite symbols
+  DoubleColonSymbol,
+  EqualEqualSymbol,
+  OpenAngleBracketEqualSymbol,
+  CloseAngleBracketEqualSymbol,
+  AmpersandAmpersandSymbol,
+  BarBarSymbol,
+  EqualCloseAngleBracketSymbol,
+  // literal
+  StringLiteral,
+  NumberLiteral,
+  // identifier
+  Identifier,
+}
 
 /**
  * Lexical Analysis (Lexing):
