@@ -1,60 +1,26 @@
 import * as Path from 'https://deno.land/std@0.224.0/path/mod.ts';
+import { horizontalTabToken, lineFeedToken, spaceToken } from '../../source/tokens.ts';
 
-const mainProgramFile = Path.join(import.meta.dirname!, './source/main.bow');
-const mainProgramSource = Deno.readFileSync(mainProgramFile);
-console.log(mainProgramSource);
-
-enum TokenKind {
-  // keywords
-  FullKeyword,
-  RootKeyword,
-  MediumKeyword,
-  FinalKeyword,
-  ReturnKeyword,
-  StringKeyword,
-  NumberKeyword,
-  TrueKeyword,
-  FalseKeyword,
-  NullKeyword,
-  IfKeyword,
-  ElseKeyword,
-  ForKeyword,
-  WhileKeyword,
-  ConstKeyword,
-  LetKeyword,
-  TryKeyword,
-  CatchKeyword,
-  // symbols
-  OpenParenthesisSymbol,
-  CloseParenthesisSymbol,
-  OpenBracketSymbol,
-  CloseBracketSymbol,
-  OpenCurlyBraceSymbol,
-  CloseCurlyBraceSymbol,
-  OpenAngleBracketSymbol,
-  CloseAngleBracketSymbol,
-  ColonSymbol,
-  CommaSymbol,
-  PlusSymbol,
-  MinusSymbol,
-  AsteriskSymbol,
-  SlashSymbol,
-  PercentSymbol,
-  DotSymbol,
-  EqualSymbol,
-  // // composite symbols
-  DoubleColonSymbol,
-  EqualEqualSymbol,
-  OpenAngleBracketEqualSymbol,
-  CloseAngleBracketEqualSymbol,
-  AmpersandAmpersandSymbol,
-  BarBarSymbol,
-  EqualCloseAngleBracketSymbol,
-  // literal
-  StringLiteral,
-  NumberLiteral,
-  // identifier
-  Identifier,
+const programSourceFile = Path.join(import.meta.dirname!, './source/main.bow');
+const programSourceBytes = Deno.readFileSync(programSourceFile);
+for (
+  let sourceByteIndex = 0;
+  sourceByteIndex < programSourceBytes.length;
+  sourceByteIndex++
+) {
+  const sourceByte = programSourceBytes[sourceByteIndex];
+  if (sourceByte === spaceToken.tokenBytes[0]) {
+    console.log('space')
+  }
+  else if (sourceByte === horizontalTabToken.tokenBytes[0]) {
+    console.log('tab')
+  }
+  else if (sourceByte === lineFeedToken.tokenBytes[0]) {
+    console.log('linefeed')
+  }
+  else {
+    // other
+  }
 }
 
 /**
