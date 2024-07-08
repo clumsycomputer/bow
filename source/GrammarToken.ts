@@ -1,10 +1,13 @@
+export type StaticToken = WhitespaceToken | KeywordToken | SymbolToken;
+
 export interface WhitespaceToken extends __StaticToken<'whitespace'> {}
 
 export interface KeywordToken extends __StaticToken<'keyword'> {}
 
 export interface SymbolToken extends __StaticToken<'symbol'> {}
 
-export interface __StaticToken<ThisTokenKind> extends __GrammarToken<ThisTokenKind> {
+export interface __StaticToken<ThisTokenKind>
+  extends __GrammarToken<ThisTokenKind> {
   tokenText: string;
   tokenBytes: Uint8Array;
 }

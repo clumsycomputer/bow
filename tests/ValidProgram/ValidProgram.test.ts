@@ -1,26 +1,159 @@
 import * as Path from 'https://deno.land/std@0.224.0/path/mod.ts';
-import { horizontalTabToken, lineFeedToken, spaceToken } from '../../source/tokens.ts';
+import {
+  horizontalTabToken,
+  initialIdentifierTokenByteMap,
+  lineFeedToken,
+  secondaryIdentifierTokenByteMap,
+  spaceToken,
+  StaticTokenByteMap,
+  staticTokenByteMap,
+} from '../../source/tokens.ts';
+import { __StaticToken, StaticToken } from '../../source/GrammarToken.ts';
+
+enum TokenLexerStateKind {
+  staticAndIdentifier,
+  static,
+  identifier,
+}
 
 const programSourceFile = Path.join(import.meta.dirname!, './source/main.bow');
 const programSourceBytes = Deno.readFileSync(programSourceFile);
+let tokenLexerState: TokenLexerState = {
+  stateKind: TokenLexerStateKind.staticAndIdentifier,
+  stateStaticTokenByteMap: staticTokenByteMap,
+  stateIdentifierTokenByteMap: initialIdentifierTokenByteMap,
+  stateIdentifierBytes: [],
+};
 for (
   let sourceByteIndex = 0;
   sourceByteIndex < programSourceBytes.length;
   sourceByteIndex++
 ) {
-  const sourceByte = programSourceBytes[sourceByteIndex];
-  if (sourceByte === spaceToken.tokenBytes[0]) {
-    console.log('space')
+  const sourceByte = programSourceBytes[sourceByteIndex]!;
+  if (tokenLexerState.stateKind === TokenLexerStateKind.staticAndIdentifier) {
+    const staticTokenByteIndex: StaticTokenByteMap | StaticToken | undefined =
+      tokenLexerState.stateStaticTokenByteMap[sourceByte];
+    if (isStaticToken(staticTokenByteIndex)) {
+      console.log(staticTokenByteIndex);
+      tokenLexerState = {
+        stateKind: TokenLexerStateKind.staticAndIdentifier,
+        stateStaticTokenByteMap: staticTokenByteMap,
+        stateIdentifierTokenByteMap: initialIdentifierTokenByteMap,
+        stateIdentifierBytes: [],
+      };
+      continue;
+    }
+    const identifierTokenByteMatches: boolean | undefined =
+      tokenLexerState.stateIdentifierTokenByteMap[sourceByte]
+    tokenLexerState = staticTokenByteIndex && identifierTokenByteMatches
+      ? {
+        stateKind: TokenLexerStateKind.staticAndIdentifier,
+        stateStaticTokenByteMap: staticTokenByteIndex,
+        stateIdentifierTokenByteMap: secondaryIdentifierTokenByteMap,
+        stateIdentifierBytes: [
+          ...tokenLexerState.stateIdentifierBytes,
+          sourceByte,
+        ],
+      }
+      : staticTokenByteIndex
+      ? {
+        stateKind: TokenLexerStateKind.static,
+        stateStaticTokenByteMap: staticTokenByteIndex,
+      }
+      : identifierTokenByteMatches
+      ? {
+        stateKind: TokenLexerStateKind.identifier,
+        stateIdentifierTokenByteMap: secondaryIdentifierTokenByteMap,
+        stateIdentifierBytes: [
+          ...tokenLexerState.stateIdentifierBytes,
+          sourceByte,
+        ],
+      }
+      : { // not right
+        stateKind: TokenLexerStateKind.staticAndIdentifier,
+        stateStaticTokenByteMap: staticTokenByteMap,
+        stateIdentifierTokenByteMap: initialIdentifierTokenByteMap,
+        stateIdentifierBytes: [],
+      };
+  } else if (tokenLexerState.stateKind === TokenLexerStateKind.static) {
+    const staticTokenByteIndex: StaticTokenByteMap | StaticToken | undefined =
+      tokenLexerState.stateStaticTokenByteMap[sourceByte];
+    if (isStaticToken(staticTokenByteIndex)) {
+      console.log(staticTokenByteIndex);
+      tokenLexerState = {
+        stateKind: TokenLexerStateKind.staticAndIdentifier,
+        stateStaticTokenByteMap: staticTokenByteMap,
+        stateIdentifierTokenByteMap: initialIdentifierTokenByteMap,
+        stateIdentifierBytes: [],
+      };
+      continue;
+    }
+    tokenLexerState = staticTokenByteIndex
+      ? {
+        stateKind: TokenLexerStateKind.static,
+        stateStaticTokenByteMap: staticTokenByteIndex
+      } : {
+        stateKind: TokenLexerStateKind.staticAndIdentifier,
+        stateStaticTokenByteMap: staticTokenByteMap,
+        stateIdentifierTokenByteMap: initialIdentifierTokenByteMap,
+        stateIdentifierBytes: [],
+      };
   }
-  else if (sourceByte === horizontalTabToken.tokenBytes[0]) {
-    console.log('tab')
+  else if (tokenLexerState.stateKind === TokenLexerStateKind.identifier) {
+    const identifierTokenByteMatches: boolean | undefined =
+      tokenLexerState.stateIdentifierTokenByteMap[sourceByte]
+    tokenLexerState = identifierTokenByteMatches
+      ? {
+        stateKind: TokenLexerStateKind.identifier,
+        stateIdentifierTokenByteMap: secondaryIdentifierTokenByteMap
+      } : { // not right
+        stateKind: TokenLexerStateKind.staticAndIdentifier,
+        stateStaticTokenByteMap: staticTokenByteMap,
+        stateIdentifierTokenByteMap: initialIdentifierTokenByteMap,
+        stateIdentifierBytes: [],
+      };
   }
-  else if (sourceByte === lineFeedToken.tokenBytes[0]) {
-    console.log('linefeed')
   }
-  else {
-    // other
-  }
+}
+
+function isStaticToken(
+  staticTokenByteIndex: any,
+): staticTokenByteIndex is StaticToken {
+  return staticTokenByteIndex && staticTokenByteIndex['tokenKind'] !== undefined;
+}
+
+type TokenLexerState =
+  | StaticAndIdentifierTokenLexerState
+  | StaticTokenLexerState
+  | IdentifierTokenLexerState;
+
+interface StaticAndIdentifierTokenLexerState
+  extends
+    __TokenLexerState<TokenLexerStateKind.staticAndIdentifier>,
+    __StaticTokenLexerStateProperties,
+    __IdentifierTokenLexerStateProperties {}
+
+interface StaticTokenLexerState
+  extends
+    __TokenLexerState<TokenLexerStateKind.static>,
+    __StaticTokenLexerStateProperties {}
+
+interface IdentifierTokenLexerState
+  extends
+    __TokenLexerState<TokenLexerStateKind.identifier>,
+    __IdentifierTokenLexerStateProperties {}
+
+interface __StaticTokenLexerStateProperties {
+  stateStaticTokenByteMap: StaticTokenByteMap;
+}
+
+interface __IdentifierTokenLexerStateProperties {
+  stateIdentifierTokenByteMap: Record<number, true>;
+  stateIdentifierBytes: Array<number>;
+}
+
+interface __TokenLexerState<ThisStateKind> {
+  stateKind: ThisStateKind;
 }
 
 /**
