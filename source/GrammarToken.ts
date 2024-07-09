@@ -1,10 +1,13 @@
+export type GrammarToken = StaticToken | LiteralToken | IdentifierToken;
+
 export type StaticToken = WhitespaceToken | KeywordToken | SymbolToken;
 
-export interface WhitespaceToken extends __StaticToken<'whitespace'> {}
+export interface WhitespaceToken
+  extends __StaticToken<GrammarTokenKind.whitespace> {}
 
-export interface KeywordToken extends __StaticToken<'keyword'> {}
+export interface KeywordToken extends __StaticToken<GrammarTokenKind.keyword> {}
 
-export interface SymbolToken extends __StaticToken<'symbol'> {}
+export interface SymbolToken extends __StaticToken<GrammarTokenKind.symbol> {}
 
 export interface __StaticToken<ThisTokenKind>
   extends __GrammarToken<ThisTokenKind> {
@@ -12,15 +15,34 @@ export interface __StaticToken<ThisTokenKind>
   tokenBytes: Uint8Array;
 }
 
-export interface StringLiteralToken extends __LiteralToken<'stringLiteral'> {}
+export type LiteralToken = StringLiteralToken | NumberLiteralToken;
 
-export interface NumberLiteralToken extends __LiteralToken<'numberLiteral'> {}
+export interface StringLiteralToken
+  extends __LiteralToken<GrammarTokenKind.stringLiteral> {}
+
+export interface NumberLiteralToken
+  extends __LiteralToken<GrammarTokenKind.numberLiteral> {}
 
 interface __LiteralToken<ThisTokenKind> extends __GrammarToken<ThisTokenKind> {}
 
-export interface IdentifierToken extends __GrammarToken<'identifier'> {}
+export interface IdentifierToken
+  extends __GrammarToken<GrammarTokenKind.identifier> {}
 
 interface __GrammarToken<ThisTokenKind> {
   tokenKind: ThisTokenKind;
   tokenId: number;
+  tokenTerminatorMap: TokenTerminatorMap;
+}
+
+interface TokenTerminatorMap {
+  [sourceByte: number]: TokenTerminatorMap | null;
+}
+
+export enum GrammarTokenKind {
+  whitespace,
+  keyword,
+  symbol,
+  stringLiteral,
+  numberLiteral,
+  identifier,
 }
